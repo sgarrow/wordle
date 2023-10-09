@@ -16,9 +16,10 @@ def prn(lst):
 ##############################################################
 
 def getUserInput(prompt, default):
-    print( f' Enter {prompt} --> {default}', end = '')
+    print( f' Enter {prompt} (CAP to quit)--> {default}', end = '')
     ui = default + input()
-    print(ui)
+    if any(ele.isupper() for ele in ui): exit()
+    #print(ui)
     return ui
 ##############################################################
 
@@ -30,13 +31,12 @@ if __name__ == '__main__':
     notExactsDflt = ''
     ##########################################################
 
+    N = input('\n Enter word size or --> ' )
+    wordLst = loadWords(int(N))
+    ######################################################
+
     while 1:
 
-        N = input( f' Enter word size or (q)uit--> ' )
-        if N == 'q': exit()
-        wordLst = loadWords(int(N))
-        ######################################################
-    
         suggest = []
         must = getUserInput('must be in', mustDflt)
         mustDflt = must
@@ -61,7 +61,7 @@ if __name__ == '__main__':
         for word in suggest2:
             hasAllExacts = True
             for exact in exacts.split():
-                if not word[int(exact[1])] == exact[0]:
+                if not word[ int(exact[1])-1 ] == exact[0]:
                     hasAllExacts = False
             if hasAllExacts:
                 suggest3.append(word)
@@ -74,7 +74,7 @@ if __name__ == '__main__':
         for word in suggest3:
             hasAnyNonExact = False
             for notExact in notExacts.split():
-                if word[int(notExact[1])] == notExact[0]:
+                if word[int(notExact[1])-1] == notExact[0]:
                     hasAnyNonExact = True
             if not hasAnyNonExact:
                 suggest4.append(word)
